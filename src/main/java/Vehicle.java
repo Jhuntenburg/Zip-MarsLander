@@ -56,6 +56,28 @@ public class Vehicle {
         return s;
     }
 
+    public Integer checkFinalStatusInteger() {
+        Integer s=0;
+        if (this.Altitude <= 0) {
+            if (this.Velocity > 10) {
+                s = -3;
+                Flying = DEAD;
+            }
+            if (this.Velocity < 10 && this.Velocity > 3) {
+                s = -2;
+                Flying = CRASHED;
+            }
+            if (this.Velocity < 3) {
+                s = 0;
+                Flying = SUCCESS;
+            }
+        } else {
+            if (this.Altitude > 0) {
+                s = -1;
+                Flying = EMPTYFUEL;
+            } }
+        return s;
+    }
     public int computeDeltaV() {
         // return velocity + gravity - burn amount
         return Velocity + Gravity - Burn;
@@ -90,7 +112,7 @@ public class Vehicle {
     public DescentEvent getStatus(int tick) {
         // create a return a new DescentEvent object
         // filled in with the state of the vehicle.
-        return new DescentEvent(tick, this.Velocity, this.Fuel, this.Altitude, this.Flying);
+        return new DescentEvent(tick, this.Velocity, this.Fuel, this.Altitude, checkFinalStatusInteger());
     }
 
 }
