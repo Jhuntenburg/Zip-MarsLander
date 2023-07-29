@@ -1,6 +1,10 @@
 public class Vehicle {
 
     public Vehicle(int InitialAltitude) {
+        this.Altitude = InitialAltitude;
+        this.PrevAltitude = InitialAltitude;
+
+
         // initialize the altitude AND previous altitude to initialAltitude
     }
 
@@ -54,30 +58,39 @@ public class Vehicle {
 
     public int computeDeltaV() {
         // return velocity + gravity - burn amount
-        return 0;
+        return Velocity + Gravity - Burn;
     }
 
     public void adjustForBurn(int burnAmount) {
+        this.Burn = burnAmount;
         // set burn to burnamount requested
+        this.PrevAltitude = Altitude;
         // save previousAltitude with current Altitude
+        this.Velocity =  computeDeltaV();
         // set new velocity to result of computeDeltaV function.
+        this.Altitude -= Velocity;
         // subtract speed from Altitude
+        this.Fuel -= Burn;
         // subtract burn amount fuel used from tank
     }
 
     public boolean stillFlying() {
         // return true if altitude is positive
+        if(Altitude > 0){
+            return true;
+        }
         return false;
     }
     public boolean outOfFuel() {
         // return true if fuel is less than or equal to zero
-        return true;
+
+            return Fuel <= 0;
     }
 
     public DescentEvent getStatus(int tick) {
         // create a return a new DescentEvent object
         // filled in with the state of the vehicle.
-        return null;
+        return new DescentEvent(tick, this.Velocity, this.Fuel, this.Altitude, this.Flying);
     }
 
 }
